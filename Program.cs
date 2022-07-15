@@ -8,6 +8,8 @@ namespace CocosSpriteSheetMaker // Note: actual namespace depends on the project
     }
     internal class Program
     {
+
+
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
@@ -22,8 +24,8 @@ namespace CocosSpriteSheetMaker // Note: actual namespace depends on the project
             //split
             Vector2 imgSz = new Vector2{ x = int.Parse(imgSize[0]), y= int.Parse(imgSize[1]) };
             Vector2 sprSz = new Vector2{ x = int.Parse(sprSize[0]), y= int.Parse(sprSize[1]) };
-
-            SheetMaker.CreateSheet(imgSz, sprSz);
+            SheetMaker.getFiles();
+            //SheetMaker.CreateSheet(imgSz, sprSz);
         }
     }
 }

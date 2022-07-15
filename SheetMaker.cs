@@ -9,9 +9,34 @@ namespace CocosSpriteSheetMaker
     public enum ResourceSize { small, med, large };
     public class SheetMaker
     {
+        public static void getFiles()
+        {
+
+            Directory.SetCurrentDirectory("G:\\Projects\\Cocos\\2dChars\\assets\\sprites\\");
+            string curpath = Directory.GetCurrentDirectory();
+            string[] folders = Directory.GetDirectories(curpath);
+            foreach(string folder in folders)
+            {
+                string sz = folder.Split("Units")[1];
+                string[] sprSzStr = sz.Split('x');
+                string[] images = Directory.GetFiles(folder, "*.png");
+                Vector2 spriteSize = new Vector2 { x = int.Parse(sprSzStr[0]), y = int.Parse(sprSzStr[1]) };
+                Vector2 imgSize = new Vector2 { x = int.Parse(sprSzStr[0])*4, y = int.Parse(sprSzStr[1])*16 };//temp
+                foreach(string image in images)
+                {
+                    Console.WriteLine(image);
+                    CreateSheet(imgSize, spriteSize, image);
+                    //CreateSheet()
+                }
+            }    
+        }
+
+
         public static void CreateSheet(Vector2 imgSz,Vector2 sprSz,string imgPath)
         {
-            using StreamWriter file = new("spr.plist");
+            string fname = imgPath.Substring(imgPath.LastIndexOf('\\') + 1);
+            string fsimpleName = imgPath.Split('.')[0];
+            using StreamWriter file = new($"{fsimpleName}.plist");
             file.WriteLine($"<?xml version=\"1.0\" encoding=\"UTF - 8\"?>");
             file.WriteLine($"<plist version=\"1.0\">");
             file.WriteLine($"    <dict>");
@@ -45,7 +70,6 @@ namespace CocosSpriteSheetMaker
                 }
                 
             }
-            string texName = "128x_zombiequeen";
             file.WriteLine($"        </dict>");
             file.WriteLine($"        <key>metadata</key>");
             file.WriteLine($"        <dict>");
@@ -56,13 +80,13 @@ namespace CocosSpriteSheetMaker
             file.WriteLine($"            <key>premultiplyAlpha</key>");
             file.WriteLine($"            <false/>");
             file.WriteLine($"            <key>realTextureFileName</key>");
-            file.WriteLine($"            <string>{texName}.png</string>");
+            file.WriteLine($"            <string>{fname}</string>");
             file.WriteLine($"            <key>size</key>");
             file.WriteLine($"            <string>{{{imgSz.x},{imgSz.y}}}</string>");
             file.WriteLine($"            <key>smartupdate</key>");
             file.WriteLine($"            <string>$TexturePacker:SmartUpdate:63fb717351e7f27d3acbeba0c97fe5b7:a8f840af5523c576fe1606e13421ab76:543da54f4cdf30f76a33554e42f69a3d$</string>");
             file.WriteLine($"            <key>textureFileName</key>");
-            file.WriteLine($"            <string>{texName}.png</string>");
+            file.WriteLine($"            <string>{fname}</string>");
             file.WriteLine($"        </dict>");
             file.WriteLine($"    </dict>");
             file.WriteLine($"</plist>");
